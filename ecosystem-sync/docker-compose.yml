@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.2
+    container_name: keycloak
+    environment:
+      KC_DB: dev-file
+      KC_HOSTNAME: localhost
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak/realm-wearable-sync.json:/opt/keycloak/data/import/realm-wearable-sync.json
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/realms/master"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  backend:
+    build: ./backend
+    container_name: backend
+    depends_on:
+      - mongo
+      - keycloak
+    environment:
+      MONGO_URI: mongodb://mongo:27017/wearable_sync
+      KEYCLOAK_REALM: wearable-sync
+      KEYCLOAK_URL: http://keycloak:8080
+      KEYCLOAK_CLIENT_ID: sync-app
+    ports:
+      - "4000:4000"
+
+volumes:
+  mongo-data:

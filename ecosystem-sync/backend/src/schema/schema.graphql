@@ -1,0 +1,27 @@
+type Biometric {
+  id: ID!
+  timestamp: String!
+  heartRate: Int!
+  hrv: Float!
+  spo2: Float!
+  sleepStage: String!
+}
+
+type Query {
+  biometric(id: ID!): Biometric
+  biometrics(limit: Int, offset: Int): [Biometric!]!
+}
+
+type Mutation {
+  addBiometric(input: BiometricInput!): Biometric!
+  addBiometricsBatch(input: [BiometricInput!]!): [Biometric!]!
+}
+
+input BiometricInput {
+  id: ID!
+  timestamp: String!
+  heartRate: Int!
+  hrv: Float!
+  spo2: Float!
+  sleepStage: String!
+}

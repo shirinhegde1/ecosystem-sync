@@ -1,0 +1,25 @@
+{
+  "realm": "wearable-sync",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "sync-app",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["*"],
+      "bearerOnly": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dummy-secret"
+    }
+  ],
+  "users": [
+    {
+      "username": "student",
+      "enabled": true,
+      "credentials": [{"type": "password", "value": "student123"}],
+      "realmRoles": []
+    }
+  ]
+}
