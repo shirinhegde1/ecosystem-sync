@@ -1,0 +1,12 @@
+{
+  "name": "mobile-gateway",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7",
+    "axios": "^1.7.2",
+    "cors": "^2.8.5"
+  }
+}

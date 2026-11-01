@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:6
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.1
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: start-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak/realm-wearable-sync.json:/opt/keycloak/data/import/realm.json
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "import", "--file", "/opt/keycloak/data/import/realm.json", "--hostname-url", "http://localhost:8080"]
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongodb
+      - keycloak
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/ecosystem
+      - KEYCLOAK_URL=http://keycloak:8080/auth
+
+volumes:
+  mongo-data:
