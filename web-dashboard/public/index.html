@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ecosystem Sync Platform | Smart Rings & Wearables</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f293d;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-amber: #f59e0b;
+      --accent-purple: #a855f7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-pills {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+    }
+
+    .pill-dot.pulsing {
+      animation: pulse 1.5s infinite;
+    }
+
+    .pill-dot.amber {
+      background: var(--accent-amber);
+      box-shadow: 0 0 8px var(--accent-amber);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .user-badge {
+      background: #1e293b;
+      padding: 0.35rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      border: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    main {
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Architecture Sync Ribbon */
+    .sync-ribbon {
+      background: linear-gradient(90deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+    }
+
+    .flow-badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    .flow-arrow {
+      color: #475569;
+      font-size: 1.1rem;
+    }
+
+    /* Cards Grid */
+    .grid-kpi {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+
+    .kpi-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .kpi-icon {
+      font-size: 1.35rem;
+    }
+
+    .kpi-value-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .kpi-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.03em;
+    }
+
+    .kpi-unit {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .kpi-footer {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0.75rem;
+    }
+
+    /* Heart rate live pulse */
+    .pulse-heart {
+      display: inline-block;
+      animation: heartbeat 1.2s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.25); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.25); }
+      70% { transform: scale(1); }
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+    }
+
+    .btn {
+      background: #1e293b;
+      color: var(--text-main);
+      border: 1px solid #334155;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #334155;
+      border-color: #64748b;
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #0369a1;
+    }
+
+    .btn-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--accent-emerald);
+      color: #34d399;
+    }
+
+    .btn-emerald:hover {
+      background: rgba(16, 185, 129, 0.25);
+    }
+
+    /* Main Chart Area */
+    .chart-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .panel-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    canvas {
+      width: 100%;
+      height: 220px;
+      display: block;
+    }
+
+    /* Live Telemetry Table */
+    .table-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    tr.highlight-new {
+      animation: highlightRow 2s ease-out;
+    }
+
+    @keyframes highlightRow {
+      0% { background: rgba(16, 185, 129, 0.25); }
+      100% { background: transparent; }
+    }
+
+    .badge-stage {
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-deep { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .badge-rem { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .badge-light { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-awake { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      max-width: 650px;
+      width: 90%;
+      padding: 1.75rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    pre.code-box {
+      background: #0b0f19;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #38bdf8;
+      max-height: 280px;
+      overflow-y: auto;
+      margin: 1rem 0;
+      border: 1px solid #1e293b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="7"></circle>
+          <path d="M12 9v6"></path>
+          <path d="M9 12h6"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">Ecosystem Sync Platform</div>
+        <div class="brand-sub">Smart Rings & Wearables Distributed Architecture</div>
+      </div>
+    </div>
+
+    <div class="header-pills">
+      <div class="pill">
+        <span class="pill-dot pulsing" id="sim-dot"></span>
+        <span>Simulator: 5s pulse</span>
+      </div>
+      <div class="pill">
+        <span class="pill-dot pulsing" id="gw-dot"></span>
+        <span>Gateway: Port 3000 (SQLite)</span>
+      </div>
+      <div class="pill">
+        <span class="pill-dot pulsing" id="be-dot"></span>
+        <span>Backend: Port 4000</span>
+      </div>
+      <div class="user-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span id="user-display">student (authorized)</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ARCHITECTURE PIPELINE RIBBON -->
+    <div class="sync-ribbon">
+      <div class="flow-step">
+        <span class="flow-badge">Tier 1</span>
+        <div><strong>Smart Ring</strong><br><small style="color:var(--text-muted)">BLE Sensor Telemetry</small></div>
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-step">
+        <span class="flow-badge">Tier 2</span>
+        <div><strong>Mobile Gateway</strong><br><small style="color:var(--accent-emerald)">SQLite Offline Buffer (<span id="queue-count">0</span> queued)</small></div>
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-step">
+        <span class="flow-badge">Tier 3</span>
+        <div><strong>Central Backend</strong><br><small style="color:var(--accent-blue)">Normalized Biometric Store</small></div>
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-step">
+        <span class="flow-badge">Tier 4</span>
+        <div><strong>Live Dashboard</strong><br><small style="color:var(--accent-purple)">Real-Time Stream Sync</small></div>
+      </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="grid-kpi">
+      <!-- Heart Rate -->
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Heart Rate</span>
+          <span class="kpi-icon pulse-heart">❤️</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpi-hr" style="color: var(--accent-rose)">--</span>
+          <span class="kpi-unit">BPM</span>
+        </div>
+        <div class="kpi-footer">
+          <span>Normal resting: 60-100</span>
+          <span id="kpi-hr-status">Listening...</span>
+        </div>
+      </div>
+
+      <!-- SpO2 -->
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Blood Oxygen (SpO₂)</span>
+          <span class="kpi-icon">🫁</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpi-spo2" style="color: var(--accent-blue)">--</span>
+          <span class="kpi-unit">%</span>
+        </div>
+        <div class="kpi-footer">
+          <span>Target: 95% - 100%</span>
+          <span id="kpi-spo2-status">Optimal</span>
+        </div>
+      </div>
+
+      <!-- HRV -->
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Heart Rate Variability</span>
+          <span class="kpi-icon">⚡</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpi-hrv" style="color: var(--accent-amber)">--</span>
+          <span class="kpi-unit">ms</span>
+        </div>
+        <div class="kpi-footer">
+          <span>Autonomic Balance</span>
+          <span id="kpi-hrv-status">Calculating...</span>
+        </div>
+      </div>
+
+      <!-- Sleep Stage -->
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Current Sleep Stage</span>
+          <span class="kpi-icon">🌙</span>
+        </div>
+        <div class="kpi-value-row" style="margin-top: 0.35rem">
+          <span class="badge-stage badge-deep" id="kpi-sleep" style="font-size: 1.15rem; padding: 0.35rem 0.85rem">STANDBY</span>
+        </div>
+        <div class="kpi-footer" style="margin-top: 1.25rem">
+          <span>Circadian Rhythm</span>
+          <span id="kpi-sleep-desc">Awaiting packet</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS & ACTIONS -->
+    <div class="controls-bar">
+      <span style="font-weight: 600; font-size: 0.85rem">Interactive Test Actions:</span>
+      <button class="btn btn-primary" onclick="simulatePacket()">
+        <span>📡</span> Simulate Ring Packet
+      </button>
+      <button class="btn btn-emerald" onclick="flushGatewaySync()">
+        <span>🔄</span> Trigger Gateway Batch Sync
+      </button>
+      <button class="btn" onclick="openGraphQLModal()">
+        <span>⚡</span> Query GraphQL API
+      </button>
+      <button class="btn" onclick="openRawQueue()">
+        <span>📦</span> View Gateway /data
+      </button>
+      <div style="margin-left: auto; font-size: 0.8rem; color: var(--text-muted)">
+        Total Records: <strong id="total-synced" style="color: #fff">0</strong> | Last Sync: <span id="last-sync-time">Never</span>
+      </div>
+    </div>
+
+    <!-- REAL-TIME TIME-SERIES CHART -->
+    <div class="chart-panel">
+      <div class="panel-title">Real-Time Biometrics Telemetry Trend</div>
+      <div class="panel-sub">Continuous rolling telemetry stream plotted dynamically as wearable sensor packets are synchronized</div>
+      <canvas id="bioChart"></canvas>
+    </div>
+
+    <!-- TELEMETRY FEED TABLE -->
+    <div class="table-panel">
+      <div class="panel-title">Live Biometric Stream & Synced Packets</div>
+      <div class="panel-sub">Showing decentralized ring measurements verified and synchronized across the ecosystem</div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Sync ID</th>
+              <th>Timestamp</th>
+              <th>Heart Rate</th>
+              <th>HRV</th>
+              <th>SpO₂</th>
+              <th>Sleep Stage</th>
+              <th>Pipeline Status</th>
+            </tr>
+          </thead>
+          <tbody id="telemetry-tbody">
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem">
+                Connecting to live stream...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- GRAPHQL MODAL -->
+  <div class="modal-backdrop" id="graphql-modal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>GraphQL Query Tester (/graphql)</h3>
+        <button style="background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;" onclick="closeGraphQLModal()">&times;</button>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem">
+        This query executes against the Apollo/GraphQL backend schema:
+      </p>
+      <pre class="code-box">query {
+  recentBiometrics(limit: 5) {
+    id
+    timestamp
+    heartRate
+    hrv
+    spo2
+    sleepStage
+  }
+}</pre>
+      <div style="display:flex; gap:0.5rem">
+        <button class="btn btn-primary" onclick="executeGraphQL()">Execute Query</button>
+        <button class="btn" onclick="closeGraphQLModal()">Close</button>
+      </div>
+      <pre class="code-box" id="gql-result" style="display:none; color:#4ade80"></pre>
+    </div>
+  </div>
+
+  <script>
+    // State
+    const historyData = [];
+    let totalSyncedCount = 0;
+
+    // Canvas chart setup
+    const canvas = document.getElementById('bioChart');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.clientWidth - 48;
+      canvas.height = 200;
+      renderChart();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function renderChart() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Draw grid lines
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let y = 30; y < h; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      if (historyData.length < 2) {
+        ctx.fillStyle = '#64748b';
+        ctx.font = '12px Inter';
+        ctx.fillText('Accumulating real-time telemetry points from ring simulator...', 20, h / 2);
+        return;
+      }
+
+      const points = historyData.slice(-25);
+      const stepX = w / (Math.max(points.length - 1, 1));
+
+      // Draw Heart Rate line (Rose/Red)
+      ctx.strokeStyle = '#f43f5e';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      points.forEach((pt, i) => {
+        const hr = pt.heartRate || 75;
+        // map 50-120 bpm to canvas height
+        const y = h - ((hr - 50) / 70) * (h - 40) - 20;
+        const x = i * stepX;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Draw HRV line (Amber)
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      points.forEach((pt, i) => {
+        const hrv = pt.hrv || 50;
+        // map 20-100 ms to canvas height
+        const y = h - ((hrv - 20) / 80) * (h - 40) - 20;
+        const x = i * stepX;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Legend
+      ctx.fillStyle = '#f43f5e';
+      ctx.fillRect(w - 180, 10, 10, 10);
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '11px JetBrains Mono';
+      ctx.fillText('Heart Rate (BPM)', w - 165, 19);
+
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(w - 180, 26, 10, 10);
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillText('HRV (ms)', w - 165, 35);
+    }
+
+    function updateKPIs(rec) {
+      if (!rec) return;
+
+      // Heart Rate
+      document.getElementById('kpi-hr').textContent = rec.heartRate;
+      document.getElementById('kpi-hr-status').textContent = rec.heartRate > 85 ? 'Elevated' : 'Resting';
+
+      // SpO2
+      document.getElementById('kpi-spo2').textContent = rec.spo2;
+      document.getElementById('kpi-spo2-status').textContent = rec.spo2 >= 96 ? 'Optimal (Normal)' : 'Borderline';
+
+      // HRV
+      document.getElementById('kpi-hrv').textContent = rec.hrv;
+      document.getElementById('kpi-hrv-status').textContent = rec.hrv > 50 ? 'High Parasympathetic' : 'Sympathetic';
+
+      // Sleep
+      const sleepBadge = document.getElementById('kpi-sleep');
+      const stage = (rec.sleepStage || 'awake').toLowerCase();
+      sleepBadge.textContent = stage.toUpperCase();
+      sleepBadge.className = `badge-stage badge-${stage}`;
+      document.getElementById('kpi-sleep-desc').textContent = `${stage.charAt(0).toUpperCase() + stage.slice(1)} Phase Active`;
+
+      // Update Chart and counters
+      historyData.push(rec);
+      totalSyncedCount++;
+      document.getElementById('total-synced').textContent = totalSyncedCount;
+      document.getElementById('last-sync-time').textContent = new Date().toLocaleTimeString();
+
+      renderChart();
+      prependTableRow(rec);
+    }
+
+    function prependTableRow(rec) {
+      const tbody = document.getElementById('telemetry-tbody');
+      // Remove placeholder row if present
+      if (tbody.children.length === 1 && tbody.children[0].children.length === 1) {
+        tbody.innerHTML = '';
+      }
+
+      const tr = document.createElement('tr');
+      tr.className = 'highlight-new';
+      const stage = (rec.sleepStage || 'awake').toLowerCase();
+      const timeStr = rec.timestamp ? new Date(rec.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString();
+      const shortId = (rec.id || 'bio').slice(0, 12);
+
+      tr.innerHTML = `
+        <td style="color:var(--accent-blue)">#${shortId}</td>
+        <td>${timeStr}</td>
+        <td style="color:var(--accent-rose)"><strong>${rec.heartRate}</strong> BPM</td>
+        <td style="color:var(--accent-amber)">${rec.hrv} ms</td>
+        <td style="color:var(--accent-blue)">${rec.spo2}%</td>
+        <td><span class="badge-stage badge-${stage}">${stage.toUpperCase()}</span></td>
+        <td><span style="color:var(--accent-emerald)">✓ Normalized & Synced</span></td>
+      `;
+
+      tbody.insertBefore(tr, tbody.firstChild);
+
+      // Keep table at max 25 rows
+      while (tbody.children.length > 25) {
+        tbody.removeChild(tbody.lastChild);
+      }
+    }
+
+    // Connect to Server-Sent Events stream (or fallback polling)
+    function initEventStream() {
+      // Determine backend URL: typically port 4000
+      const sseUrl = window.location.port === '4000' ? '/api/stream' : 'http://localhost:4000/api/stream';
+
+      try {
+        const evtSource = new EventSource(sseUrl);
+
+        evtSource.addEventListener('connected', () => {
+          console.log('[SSE] Connected to backend live stream');
+          document.getElementById('be-dot').style.background = '#10b981';
+        });
+
+        evtSource.addEventListener('biometric_added', (e) => {
+          const rec = JSON.parse(e.data);
+          updateKPIs(rec);
+        });
+
+        evtSource.onerror = () => {
+          // If SSE encounters an issue, fallback to polling
+          console.warn('[SSE] EventSource reconnecting / polling fallback');
+        };
+      } catch (e) {
+        console.error('SSE initialization error', e);
+      }
+
+      // Also fetch initial data from backend
+      fetchInitialData();
+      // Periodically poll gateway queue status
+      setInterval(checkGatewayQueue, 3000);
+    }
+
+    async function fetchInitialData() {
+      const url = window.location.port === '4000' ? '/api/biometrics?limit=15' : 'http://localhost:4000/api/biometrics?limit=15';
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          data.reverse().forEach(r => updateKPIs(r));
+        }
+      } catch (err) {
+        console.log('Initial fetch waiting for backend to be ready...');
+      }
+    }
+
+    async function checkGatewayQueue() {
+      try {
+        const res = await fetch('http://localhost:3000/data');
+        const info = await res.json();
+        if (info && info.bufferedInSQLite !== undefined) {
+          document.getElementById('queue-count').textContent = info.bufferedInSQLite;
+        }
+      } catch (e) {}
+    }
+
+    // Interactive button actions
+    async function simulatePacket() {
+      const sample = {
+        id: 'manual_' + Math.random().toString(36).substr(2, 9),
+        timestamp: new Date().toISOString(),
+        heartRate: Math.floor(Math.random() * (98 - 62 + 1)) + 62,
+        hrv: Math.floor(Math.random() * (75 - 35 + 1)) + 35,
+        spo2: Math.floor(Math.random() * (99 - 95 + 1)) + 95,
+        sleepStage: ['awake', 'light', 'deep', 'rem'][Math.floor(Math.random() * 4)]
+      };
+
+      try {
+        const res = await fetch('http://localhost:3000/data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sample)
+        });
+        const out = await res.json();
+        alert('Simulator Packet Sent! Status: ' + JSON.stringify(out) + '\nQueued in SQLite on Mobile Gateway (port 3000).');
+        checkGatewayQueue();
+      } catch (e) {
+        alert('Failed to send packet to gateway: ' + e.message);
+      }
+    }
+
+    async function flushGatewaySync() {
+      try {
+        const res = await fetch('http://localhost:3000/api/sync-now', { method: 'POST' });
+        const out = await res.json();
+        alert('Gateway Batch Sync Triggered!\n' + JSON.stringify(out));
+        checkGatewayQueue();
+      } catch (e) {
+        alert('Gateway sync error: ' + e.message);
+      }
+    }
+
+    function openRawQueue() {
+      window.open('http://localhost:3000/data', '_blank');
+    }
+
+    function openGraphQLModal() {
+      document.getElementById('graphql-modal').style.display = 'flex';
+      executeGraphQL();
+    }
+
+    function closeGraphQLModal() {
+      document.getElementById('graphql-modal').style.display = 'none';
+    }
+
+    async function executeGraphQL() {
+      const q = `query {
+  recentBiometrics(limit: 5) {
+    id
+    timestamp
+    heartRate
+    hrv
+    spo2
+    sleepStage
+  }
+}`;
+      const resBox = document.getElementById('gql-result');
+      resBox.style.display = 'block';
+      resBox.textContent = 'Executing query on http://localhost:4000/graphql ...';
+
+      try {
+        const res = await fetch('http://localhost:4000/graphql', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q })
+        });
+        const data = await res.json();
+        resBox.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        resBox.textContent = 'GraphQL Request Error: ' + e.message;
+      }
+    }
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      resizeCanvas();
+      initEventStream();
+    });
+  </script>
+</body>
+</html>

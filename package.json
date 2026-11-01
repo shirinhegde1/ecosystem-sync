@@ -1,0 +1,11 @@
+{
+  "name": "ecosystem-sync",
+  "version": "1.0.0",
+  "description": "Ecosystem Sync Platform for Smart Rings & Wearables",
+  "main": "start.js",
+  "scripts": {
+    "start": "node start.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

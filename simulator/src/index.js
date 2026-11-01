@@ -9,21 +9,24 @@ function generateRecord() {
   return {
     id: uuidv4(),
     timestamp: new Date().toISOString(),
-    heartRate: randomInt(60, 100),
-    hrv: randomInt(30, 80),
-    spo2: randomInt(94, 100),
-    sleepStage: ['awake','light','deep','rem'][randomInt(0,3)]
+    heartRate: randomInt(64, 96),
+    hrv: randomInt(35, 78),
+    spo2: randomInt(95, 99),
+    sleepStage: ['awake', 'light', 'deep', 'rem'][randomInt(0, 3)]
   };
 }
 
 async function sendRecord() {
   const record = generateRecord();
   try {
-    await axios.post('http://localhost:3000/data', record);
-    console.log('Sent', record.id);
+    const res = await axios.post('http://localhost:3000/data', record, { timeout: 3000 });
+    console.log(`[Smart Ring BLE] Telemetry -> HR: ${record.heartRate} bpm | SpO2: ${record.spo2}% | HRV: ${record.hrv}ms | Stage: ${record.sleepStage} (${res.data.status})`);
   } catch (e) {
-    console.error('Send failed', e.message);
+    console.warn(`[Smart Ring BLE] Gateway connect retry (${e.message})`);
   }
 }
 
+console.log('Smart Ring Wearable Sensor Simulator started (transmitting every 5s)...');
+// Emit immediately on start
+sendRecord();
 setInterval(sendRecord, 5000);
