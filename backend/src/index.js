@@ -54,10 +54,14 @@ app.get('/api/stream', (req, res) => {
   });
 });
 
-// Authentication endpoint (Review 1 Spec: student / student123)
+// Authentication endpoint (User / user123)
 app.post('/api/auth/login', (req, res) => {
   const { username, password } = req.body || {};
-  if ((username === 'student' && password === 'student123') || (username === 'admin' && password === 'admin')) {
+  if (
+    (username === 'user' && password === 'user123') ||
+    (username === 'student' && password === 'student123') ||
+    (username === 'admin' && password === 'admin')
+  ) {
     return res.json({
       token: `token_${Date.now()}_auth_ok`,
       user: {
@@ -67,7 +71,7 @@ app.post('/api/auth/login', (req, res) => {
       }
     });
   }
-  return res.status(401).json({ error: 'Invalid credentials. Use student / student123' });
+  return res.status(401).json({ error: 'Invalid credentials. Use user / user123' });
 });
 
 // Batch sync endpoint (called by mobile gateway)

@@ -56,7 +56,7 @@ This project addresses these challenges with a **multi-tier distributed architec
 │   - SQLite Store (ecosystem.db) │
 │   - Apollo/GraphQL (/graphql)   │
 │   - Real-Time SSE Stream        │
-│   - Auth Endpoint (student)     │
+│   - Auth Endpoint (user)        │
 └───────────────┬─────────────────┘
                 │ Live Event Stream (/api/stream)
                 ▼
@@ -251,8 +251,8 @@ To demonstrate offline recovery:
 ---
 
 ## 👥 Authentication & Roles
-- **Default Test User**: `student`
-- **Default Password**: `student123`
+- **Default Test User**: `user`
+- **Default Password**: `user123`
 - **Role**: `authorized_wearable_client` (Realm: `wearable-sync`)
 
 ---
