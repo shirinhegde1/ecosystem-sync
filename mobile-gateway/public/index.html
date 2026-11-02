@@ -6,7 +6,7 @@
   <title>Ecosystem Sync Platform | Smart Rings & Wearables</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0b0f19;
@@ -30,13 +30,15 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
+    /* HEADER */
     header {
-      background: rgba(17, 24, 39, 0.85);
+      background: rgba(17, 24, 39, 0.9);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--card-border);
-      padding: 1rem 2rem;
+      padding: 0.9rem 2rem;
       position: sticky;
       top: 0;
       z-index: 50;
@@ -54,8 +56,8 @@
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       background: linear-gradient(135deg, #0284c7, #38bdf8);
       display: flex;
@@ -77,7 +79,7 @@
 
     .header-pills {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.65rem;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -85,18 +87,18 @@
     .pill {
       font-size: 0.75rem;
       font-family: 'JetBrains Mono', monospace;
-      padding: 0.35rem 0.75rem;
+      padding: 0.3rem 0.7rem;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--card-border);
     }
 
     .pill-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--accent-emerald);
       box-shadow: 0 0 8px var(--accent-emerald);
@@ -104,11 +106,6 @@
 
     .pill-dot.pulsing {
       animation: pulse 1.5s infinite;
-    }
-
-    .pill-dot.amber {
-      background: var(--accent-amber);
-      box-shadow: 0 0 8px var(--accent-amber);
     }
 
     @keyframes pulse {
@@ -125,55 +122,168 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      color: #e2e8f0;
     }
 
     main {
-      max-width: 1300px;
+      max-width: 1320px;
       width: 100%;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1.75rem;
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 1.75rem;
     }
 
-    /* Architecture Sync Ribbon */
-    .sync-ribbon {
-      background: linear-gradient(90deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+    /* 4-TIER ANIMATED PIPELINE BUS */
+    .pipeline-wrapper {
+      background: linear-gradient(180deg, #131c31 0%, #0d1526 100%);
+      border: 1px solid #1e2e4a;
+      border-radius: 16px;
+      padding: 1.4rem 1.75rem;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .pipeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.1rem;
+    }
+
+    .pipeline-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pipeline-status-text {
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+    }
+
+    .pipeline-stages {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    .stage-card {
+      background: rgba(17, 24, 39, 0.85);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 1rem 1.5rem;
+      padding: 0.9rem 1rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1.5rem;
+      gap: 0.75rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 2;
     }
 
-    .flow-step {
+    .stage-card.flash-active {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .stage-card.flash-sync {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .stage-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.85rem;
-    }
-
-    .flow-badge {
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--accent-blue);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.75rem;
-    }
-
-    .flow-arrow {
-      color: #475569;
+      justify-content: center;
       font-size: 1.1rem;
+      flex-shrink: 0;
     }
 
-    /* Cards Grid */
+    .stage-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .stage-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stage-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stage-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Connectors with flowing particles */
+    .stage-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 48px;
+      height: 24px;
+    }
+
+    .connector-line {
+      width: 100%;
+      height: 3px;
+      background: #1e293b;
+      position: relative;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .connector-particle {
+      position: absolute;
+      top: 0;
+      left: -20px;
+      width: 16px;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent-blue), #fff);
+      opacity: 0;
+      border-radius: 2px;
+    }
+
+    .connector-particle.animate-flow {
+      animation: particleMove 0.8s ease-in-out;
+    }
+
+    @keyframes particleMove {
+      0% { left: -20px; opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+
+    /* KPI CARDS GRID */
     .grid-kpi {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -184,7 +294,7 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 1.5rem;
+      padding: 1.35rem 1.5rem;
       position: relative;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
@@ -204,7 +314,7 @@
     }
 
     .kpi-label {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
@@ -222,7 +332,7 @@
     }
 
     .kpi-value {
-      font-size: 2.5rem;
+      font-size: 2.4rem;
       font-weight: 700;
       font-family: 'JetBrains Mono', monospace;
       letter-spacing: -0.03em;
@@ -235,7 +345,7 @@
     }
 
     .kpi-footer {
-      margin-top: 1rem;
+      margin-top: 0.9rem;
       font-size: 0.75rem;
       color: var(--text-muted);
       display: flex;
@@ -245,7 +355,6 @@
       padding-top: 0.75rem;
     }
 
-    /* Heart rate live pulse */
     .pulse-heart {
       display: inline-block;
       animation: heartbeat 1.2s infinite;
@@ -259,36 +368,68 @@
       70% { transform: scale(1); }
     }
 
-    /* Controls Bar */
-    .controls-bar {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      align-items: center;
+    /* INTERACTIVE ACTIONS BAR */
+    .controls-panel {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .controls-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .controls-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .controls-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
     }
 
     .btn {
       background: #1e293b;
       color: var(--text-main);
       border: 1px solid #334155;
-      padding: 0.6rem 1.2rem;
+      padding: 0.65rem 1.15rem;
       border-radius: 8px;
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.55rem;
       transition: all 0.2s ease;
+      user-select: none;
     }
 
     .btn:hover {
       background: #334155;
       border-color: #64748b;
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
     }
 
     .btn-primary {
@@ -296,9 +437,9 @@
       border-color: #38bdf8;
       color: #fff;
     }
-
     .btn-primary:hover {
       background: #0369a1;
+      border-color: #7dd3fc;
     }
 
     .btn-emerald {
@@ -306,12 +447,127 @@
       border-color: var(--accent-emerald);
       color: #34d399;
     }
-
     .btn-emerald:hover {
-      background: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.28);
     }
 
-    /* Main Chart Area */
+    .btn-purple {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: var(--accent-purple);
+      color: #c084fc;
+    }
+    .btn-purple:hover {
+      background: rgba(168, 85, 247, 0.28);
+    }
+
+    .btn-amber {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--accent-amber);
+      color: #fbbf24;
+    }
+    .btn-amber:hover {
+      background: rgba(245, 158, 11, 0.28);
+    }
+
+    /* INLINE VISUAL PANELS (REPLACES POPUPS) */
+    .drawer-panel {
+      background: #0a0f1d;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 0.5rem;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      border-bottom: 1px solid #1f293d;
+      padding-bottom: 0.65rem;
+    }
+
+    .drawer-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .drawer-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.25rem;
+      padding: 0 0.4rem;
+    }
+    .drawer-close:hover { color: #fff; }
+
+    /* GraphQL Studio Split View */
+    .gql-studio {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 800px) {
+      .gql-studio { grid-template-columns: 1fr; }
+    }
+
+    .code-editor-box {
+      background: #060913;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #38bdf8;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .code-response-box {
+      background: #060913;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #4ade80;
+      max-height: 240px;
+      overflow-y: auto;
+      white-space: pre;
+    }
+
+    /* SQLite Drawer Table */
+    .sqlite-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .sqlite-table th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.6rem 0.85rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid #1e293b;
+      text-align: left;
+    }
+    .sqlite-table td {
+      padding: 0.6rem 0.85rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    /* CHART PANEL */
     .chart-panel {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -320,7 +576,7 @@
     }
 
     .panel-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 600;
       margin-bottom: 0.25rem;
     }
@@ -328,22 +584,21 @@
     .panel-sub {
       font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     canvas {
       width: 100%;
-      height: 220px;
+      height: 210px;
       display: block;
     }
 
-    /* Live Telemetry Table */
+    /* TELEMETRY TABLE */
     .table-panel {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
       padding: 1.5rem;
-      overflow: hidden;
     }
 
     .table-container {
@@ -351,25 +606,25 @@
       margin-top: 1rem;
     }
 
-    table {
+    table.main-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       text-align: left;
     }
 
-    th {
+    table.main-table th {
       background: rgba(255, 255, 255, 0.02);
       color: var(--text-muted);
       padding: 0.75rem 1rem;
       border-bottom: 1px solid var(--card-border);
       font-weight: 600;
       text-transform: uppercase;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 0.05em;
     }
 
-    td {
+    table.main-table td {
       padding: 0.85rem 1rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       font-family: 'JetBrains Mono', monospace;
@@ -393,45 +648,47 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-
     .badge-deep { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
     .badge-rem { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
     .badge-light { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .badge-awake { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
 
-    /* Modal */
-    .modal-backdrop {
+    /* FLOATING ACTION TOASTS (BOTTOM RIGHT) */
+    .toast-container {
       position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
+      bottom: 1.5rem;
+      right: 1.5rem;
       z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      pointer-events: none;
+      max-width: 420px;
     }
 
-    .modal-content {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      max-width: 650px;
-      width: 90%;
-      padding: 1.75rem;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    .toast {
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 0.85rem 1.15rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+      animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+      border-left: 4px solid var(--accent-blue);
     }
 
-    pre.code-box {
-      background: #0b0f19;
-      padding: 1rem;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: #38bdf8;
-      max-height: 280px;
-      overflow-y: auto;
-      margin: 1rem 0;
-      border: 1px solid #1e293b;
+    .toast.toast-emerald { border-left-color: var(--accent-emerald); }
+    .toast.toast-purple { border-left-color: var(--accent-purple); }
+    .toast.toast-amber { border-left-color: var(--accent-amber); }
+
+    @keyframes toastSlideIn {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
   </style>
 </head>
@@ -474,30 +731,82 @@
   </header>
 
   <main>
-    <!-- ARCHITECTURE PIPELINE RIBBON -->
-    <div class="sync-ribbon">
-      <div class="flow-step">
-        <span class="flow-badge">Tier 1</span>
-        <div><strong>Smart Ring</strong><br><small style="color:var(--text-muted)">BLE Sensor Telemetry</small></div>
+    <!-- 4-TIER ANIMATED PIPELINE BUS -->
+    <div class="pipeline-wrapper">
+      <div class="pipeline-header">
+        <div class="pipeline-title">
+          <span>⚡ 4-Tier Distributed Synchronization Pipeline</span>
+        </div>
+        <div class="pipeline-status-text" id="pipeline-status">
+          Pipeline Active • Auto-Batch Interval: 5s
+        </div>
       </div>
-      <div class="flow-arrow">➔</div>
-      <div class="flow-step">
-        <span class="flow-badge">Tier 2</span>
-        <div><strong>Mobile Gateway</strong><br><small style="color:var(--accent-emerald)">SQLite Offline Buffer (<span id="queue-count">0</span> queued)</small></div>
-      </div>
-      <div class="flow-arrow">➔</div>
-      <div class="flow-step">
-        <span class="flow-badge">Tier 3</span>
-        <div><strong>Central Backend</strong><br><small style="color:var(--accent-blue)">Normalized Biometric Store</small></div>
-      </div>
-      <div class="flow-arrow">➔</div>
-      <div class="flow-step">
-        <span class="flow-badge">Tier 4</span>
-        <div><strong>Live Dashboard</strong><br><small style="color:var(--accent-purple)">Real-Time Stream Sync</small></div>
+
+      <div class="pipeline-stages">
+        <!-- Tier 1: Smart Ring -->
+        <div class="stage-card" id="card-tier1">
+          <div class="stage-icon" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-blue)">💍</div>
+          <div class="stage-info">
+            <span class="stage-badge" style="color: var(--accent-blue)">Tier 1</span>
+            <span class="stage-name">Smart Ring</span>
+            <span class="stage-sub">BLE Telemetry</span>
+          </div>
+        </div>
+
+        <!-- Connector 1 -> 2 -->
+        <div class="stage-connector">
+          <div class="connector-line">
+            <div class="connector-particle" id="particle-1"></div>
+          </div>
+        </div>
+
+        <!-- Tier 2: Mobile Gateway -->
+        <div class="stage-card" id="card-tier2">
+          <div class="stage-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald)">📱</div>
+          <div class="stage-info">
+            <span class="stage-badge" style="color: var(--accent-emerald)">Tier 2</span>
+            <span class="stage-name">Mobile Gateway</span>
+            <span class="stage-sub"><span id="queue-count" style="color: #34d399; font-weight: 700">0</span> in queue.db</span>
+          </div>
+        </div>
+
+        <!-- Connector 2 -> 3 -->
+        <div class="stage-connector">
+          <div class="connector-line">
+            <div class="connector-particle" id="particle-2"></div>
+          </div>
+        </div>
+
+        <!-- Tier 3: Central Backend -->
+        <div class="stage-card" id="card-tier3">
+          <div class="stage-icon" style="background: rgba(168, 85, 247, 0.15); color: var(--accent-purple)">🗄️</div>
+          <div class="stage-info">
+            <span class="stage-badge" style="color: var(--accent-purple)">Tier 3</span>
+            <span class="stage-name">Central Backend</span>
+            <span class="stage-sub">ecosystem.db (SQLite)</span>
+          </div>
+        </div>
+
+        <!-- Connector 3 -> 4 -->
+        <div class="stage-connector">
+          <div class="connector-line">
+            <div class="connector-particle" id="particle-3"></div>
+          </div>
+        </div>
+
+        <!-- Tier 4: Live Dashboard -->
+        <div class="stage-card" id="card-tier4">
+          <div class="stage-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber)">📊</div>
+          <div class="stage-info">
+            <span class="stage-badge" style="color: var(--accent-amber)">Tier 4</span>
+            <span class="stage-name">Web Dashboard</span>
+            <span class="stage-sub"><span id="total-synced" style="color:#fff; font-weight:700">0</span> records</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- KPI CARDS -->
+    <!-- KPI METRIC CARDS -->
     <div class="grid-kpi">
       <!-- Heart Rate -->
       <div class="kpi-card">
@@ -510,8 +819,8 @@
           <span class="kpi-unit">BPM</span>
         </div>
         <div class="kpi-footer">
-          <span>Normal resting: 60-100</span>
-          <span id="kpi-hr-status">Listening...</span>
+          <span>Resting Baseline: 60-100</span>
+          <span id="kpi-hr-status">Streaming...</span>
         </div>
       </div>
 
@@ -526,7 +835,7 @@
           <span class="kpi-unit">%</span>
         </div>
         <div class="kpi-footer">
-          <span>Target: 95% - 100%</span>
+          <span>Normal: 95% - 100%</span>
           <span id="kpi-spo2-status">Optimal</span>
         </div>
       </div>
@@ -557,29 +866,108 @@
           <span class="badge-stage badge-deep" id="kpi-sleep" style="font-size: 1.15rem; padding: 0.35rem 0.85rem">STANDBY</span>
         </div>
         <div class="kpi-footer" style="margin-top: 1.25rem">
-          <span>Circadian Rhythm</span>
+          <span>Circadian Tracking</span>
           <span id="kpi-sleep-desc">Awaiting packet</span>
         </div>
       </div>
     </div>
 
-    <!-- CONTROLS & ACTIONS -->
-    <div class="controls-bar">
-      <span style="font-weight: 600; font-size: 0.85rem">Interactive Test Actions:</span>
-      <button class="btn btn-primary" onclick="simulatePacket()">
-        <span>📡</span> Simulate Ring Packet
-      </button>
-      <button class="btn btn-emerald" onclick="flushGatewaySync()">
-        <span>🔄</span> Trigger Gateway Batch Sync
-      </button>
-      <button class="btn" onclick="openGraphQLModal()">
-        <span>⚡</span> Query GraphQL API
-      </button>
-      <button class="btn" onclick="openRawQueue()">
-        <span>📦</span> View Gateway /data
-      </button>
-      <div style="margin-left: auto; font-size: 0.8rem; color: var(--text-muted)">
-        Total Records: <strong id="total-synced" style="color: #fff">0</strong> | Last Sync: <span id="last-sync-time">Never</span>
+    <!-- CONTROLS & IN-PAGE VISUAL INSPECTORS -->
+    <div class="controls-panel">
+      <div class="controls-top">
+        <div>
+          <div class="controls-title">🛠️ Interactive Pipeline Actions</div>
+          <div class="controls-sub">Click any action to visually trigger and inspect data flowing across the 4 tiers (No alert popups)</div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="simulatePacketVisual()">
+            <span>📡</span> Simulate Ring Packet
+          </button>
+          <button class="btn btn-emerald" onclick="flushGatewaySyncVisual()">
+            <span>🔄</span> Trigger Gateway Batch Sync
+          </button>
+          <button class="btn btn-purple" onclick="toggleGraphQLStudio()">
+            <span>⚡</span> Query GraphQL Studio
+          </button>
+          <button class="btn btn-amber" onclick="toggleSQLiteDrawer()">
+            <span>📦</span> Inspect SQLite Buffer (/data)
+          </button>
+        </div>
+      </div>
+
+      <!-- IN-PAGE DRAWER 1: GRAPHQL STUDIO -->
+      <div class="drawer-panel" id="graphql-studio-drawer">
+        <div class="drawer-header">
+          <div class="drawer-title" style="color: var(--accent-purple)">
+            <span>⚡ In-Page Apollo GraphQL Studio</span>
+            <small style="color: var(--text-muted); font-weight: normal; margin-left: 0.5rem">(POST http://localhost:4000/graphql)</small>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.6rem">
+            <button class="btn btn-purple" style="padding:0.4rem 0.85rem; font-size:0.75rem" onclick="runInPageGraphQL()">Execute Query</button>
+            <button class="drawer-close" onclick="toggleGraphQLStudio()">&times;</button>
+          </div>
+        </div>
+
+        <div class="gql-studio">
+          <div>
+            <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.4rem; font-weight:600">GraphQL Query Source</div>
+            <div class="code-editor-box">query GetRecentBiometrics {
+  recentBiometrics(limit: 5) {
+    id
+    timestamp
+    heartRate
+    hrv
+    spo2
+    sleepStage
+  }
+}</div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem">
+              <span style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:600">Schema Execution Response</span>
+              <span id="gql-timing" style="font-size:0.72rem; color:var(--accent-emerald); font-family:'JetBrains Mono'">Click Execute</span>
+            </div>
+            <div class="code-response-box" id="gql-response-box">// Live JSON data from backend GraphQL resolver will appear here...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IN-PAGE DRAWER 2: SQLITE OFFLINE BUFFER -->
+      <div class="drawer-panel" id="sqlite-drawer">
+        <div class="drawer-header">
+          <div class="drawer-title" style="color: var(--accent-amber)">
+            <span>📦 Mobile Gateway SQLite Buffer Viewer (`queue.db`)</span>
+            <small style="color: var(--text-muted); font-weight: normal; margin-left: 0.5rem">(Live offline records awaiting delta sync)</small>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.6rem">
+            <button class="btn btn-amber" style="padding:0.4rem 0.85rem; font-size:0.75rem" onclick="loadSQLiteBufferData()">Refresh Queue</button>
+            <a href="http://localhost:3000/data" target="_blank" class="btn" style="padding:0.4rem 0.85rem; font-size:0.75rem; text-decoration:none">Raw JSON ↗</a>
+            <button class="drawer-close" onclick="toggleSQLiteDrawer()">&times;</button>
+          </div>
+        </div>
+
+        <div id="sqlite-buffer-content" style="max-height: 220px; overflow-y: auto;">
+          <table class="sqlite-table">
+            <thead>
+              <tr>
+                <th>Record ID</th>
+                <th>Timestamp</th>
+                <th>Heart Rate</th>
+                <th>HRV</th>
+                <th>SpO₂</th>
+                <th>Sleep Stage</th>
+                <th>Buffer State</th>
+              </tr>
+            </thead>
+            <tbody id="sqlite-table-body">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem">
+                  Loading SQLite buffer from http://localhost:3000/data...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -595,7 +983,7 @@
       <div class="panel-title">Live Biometric Stream & Synced Packets</div>
       <div class="panel-sub">Showing decentralized ring measurements verified and synchronized across the ecosystem</div>
       <div class="table-container">
-        <table>
+        <table class="main-table">
           <thead>
             <tr>
               <th>Sync ID</th>
@@ -619,40 +1007,53 @@
     </div>
   </main>
 
-  <!-- GRAPHQL MODAL -->
-  <div class="modal-backdrop" id="graphql-modal">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3>GraphQL Query Tester (/graphql)</h3>
-        <button style="background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;" onclick="closeGraphQLModal()">&times;</button>
-      </div>
-      <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem">
-        This query executes against the Apollo/GraphQL backend schema:
-      </p>
-      <pre class="code-box">query {
-  recentBiometrics(limit: 5) {
-    id
-    timestamp
-    heartRate
-    hrv
-    spo2
-    sleepStage
-  }
-}</pre>
-      <div style="display:flex; gap:0.5rem">
-        <button class="btn btn-primary" onclick="executeGraphQL()">Execute Query</button>
-        <button class="btn" onclick="closeGraphQLModal()">Close</button>
-      </div>
-      <pre class="code-box" id="gql-result" style="display:none; color:#4ade80"></pre>
-    </div>
-  </div>
+  <!-- FLOATING ACTION TOASTS -->
+  <div class="toast-container" id="toast-container"></div>
 
   <script>
     // State
     const historyData = [];
     let totalSyncedCount = 0;
 
-    // Canvas chart setup
+    // Toast notification system (replaces alert popups)
+    function showToast(message, type = 'blue') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `<div>${message}</div>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Trigger visual particle flow animation between stages
+    function animatePipelineFlow(particleId, sourceCardId, targetCardId) {
+      const particle = document.getElementById(particleId);
+      const srcCard = document.getElementById(sourceCardId);
+      const tgtCard = document.getElementById(targetCardId);
+
+      if (srcCard) srcCard.classList.add('flash-active');
+      if (particle) {
+        particle.classList.remove('animate-flow');
+        void particle.offsetWidth; // force reflow
+        particle.classList.add('animate-flow');
+      }
+
+      setTimeout(() => {
+        if (srcCard) srcCard.classList.remove('flash-active');
+        if (tgtCard) {
+          tgtCard.classList.add('flash-sync');
+          setTimeout(() => tgtCard.classList.remove('flash-sync'), 600);
+        }
+      }, 700);
+    }
+
+    // Canvas Chart
     const canvas = document.getElementById('bioChart');
     const ctx = canvas.getContext('2d');
 
@@ -668,7 +1069,7 @@
       const w = canvas.width;
       const h = canvas.height;
 
-      // Draw grid lines
+      // Grid lines
       ctx.strokeStyle = '#1e293b';
       ctx.lineWidth = 1;
       for (let y = 30; y < h; y += 40) {
@@ -686,15 +1087,14 @@
       }
 
       const points = historyData.slice(-25);
-      const stepX = w / (Math.max(points.length - 1, 1));
+      const stepX = w / Math.max(points.length - 1, 1);
 
-      // Draw Heart Rate line (Rose/Red)
+      // Heart Rate Line (Rose)
       ctx.strokeStyle = '#f43f5e';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       points.forEach((pt, i) => {
         const hr = pt.heartRate || 75;
-        // map 50-120 bpm to canvas height
         const y = h - ((hr - 50) / 70) * (h - 40) - 20;
         const x = i * stepX;
         if (i === 0) ctx.moveTo(x, y);
@@ -702,13 +1102,12 @@
       });
       ctx.stroke();
 
-      // Draw HRV line (Amber)
+      // HRV Line (Amber)
       ctx.strokeStyle = '#f59e0b';
       ctx.lineWidth = 2;
       ctx.beginPath();
       points.forEach((pt, i) => {
         const hrv = pt.hrv || 50;
-        // map 20-100 ms to canvas height
         const y = h - ((hrv - 20) / 80) * (h - 40) - 20;
         const x = i * stepX;
         if (i === 0) ctx.moveTo(x, y);
@@ -729,41 +1128,38 @@
       ctx.fillText('HRV (ms)', w - 165, 35);
     }
 
-    function updateKPIs(rec) {
+    function updateKPIs(rec, isLive = true) {
       if (!rec) return;
 
-      // Heart Rate
       document.getElementById('kpi-hr').textContent = rec.heartRate;
       document.getElementById('kpi-hr-status').textContent = rec.heartRate > 85 ? 'Elevated' : 'Resting';
 
-      // SpO2
       document.getElementById('kpi-spo2').textContent = rec.spo2;
-      document.getElementById('kpi-spo2-status').textContent = rec.spo2 >= 96 ? 'Optimal (Normal)' : 'Borderline';
+      document.getElementById('kpi-spo2-status').textContent = rec.spo2 >= 96 ? 'Optimal' : 'Borderline';
 
-      // HRV
       document.getElementById('kpi-hrv').textContent = rec.hrv;
-      document.getElementById('kpi-hrv-status').textContent = rec.hrv > 50 ? 'High Parasympathetic' : 'Sympathetic';
+      document.getElementById('kpi-hrv-status').textContent = rec.hrv > 50 ? 'High Recovery' : 'Sympathetic';
 
-      // Sleep
       const sleepBadge = document.getElementById('kpi-sleep');
       const stage = (rec.sleepStage || 'awake').toLowerCase();
       sleepBadge.textContent = stage.toUpperCase();
       sleepBadge.className = `badge-stage badge-${stage}`;
       document.getElementById('kpi-sleep-desc').textContent = `${stage.charAt(0).toUpperCase() + stage.slice(1)} Phase Active`;
 
-      // Update Chart and counters
       historyData.push(rec);
       totalSyncedCount++;
       document.getElementById('total-synced').textContent = totalSyncedCount;
-      document.getElementById('last-sync-time').textContent = new Date().toLocaleTimeString();
 
       renderChart();
       prependTableRow(rec);
+
+      if (isLive) {
+        animatePipelineFlow('particle-3', 'card-tier3', 'card-tier4');
+      }
     }
 
     function prependTableRow(rec) {
       const tbody = document.getElementById('telemetry-tbody');
-      // Remove placeholder row if present
       if (tbody.children.length === 1 && tbody.children[0].children.length === 1) {
         tbody.innerHTML = '';
       }
@@ -785,72 +1181,17 @@
       `;
 
       tbody.insertBefore(tr, tbody.firstChild);
-
-      // Keep table at max 25 rows
       while (tbody.children.length > 25) {
         tbody.removeChild(tbody.lastChild);
       }
     }
 
-    // Connect to Server-Sent Events stream (or fallback polling)
-    function initEventStream() {
-      // Determine backend URL: typically port 4000
-      const sseUrl = window.location.port === '4000' ? '/api/stream' : 'http://localhost:4000/api/stream';
+    // INTERACTIVE ACTION 1: VISUAL SIMULATE PACKET
+    async function simulatePacketVisual() {
+      animatePipelineFlow('particle-1', 'card-tier1', 'card-tier2');
 
-      try {
-        const evtSource = new EventSource(sseUrl);
-
-        evtSource.addEventListener('connected', () => {
-          console.log('[SSE] Connected to backend live stream');
-          document.getElementById('be-dot').style.background = '#10b981';
-        });
-
-        evtSource.addEventListener('biometric_added', (e) => {
-          const rec = JSON.parse(e.data);
-          updateKPIs(rec);
-        });
-
-        evtSource.onerror = () => {
-          // If SSE encounters an issue, fallback to polling
-          console.warn('[SSE] EventSource reconnecting / polling fallback');
-        };
-      } catch (e) {
-        console.error('SSE initialization error', e);
-      }
-
-      // Also fetch initial data from backend
-      fetchInitialData();
-      // Periodically poll gateway queue status
-      setInterval(checkGatewayQueue, 3000);
-    }
-
-    async function fetchInitialData() {
-      const url = window.location.port === '4000' ? '/api/biometrics?limit=15' : 'http://localhost:4000/api/biometrics?limit=15';
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          data.reverse().forEach(r => updateKPIs(r));
-        }
-      } catch (err) {
-        console.log('Initial fetch waiting for backend to be ready...');
-      }
-    }
-
-    async function checkGatewayQueue() {
-      try {
-        const res = await fetch('http://localhost:3000/data');
-        const info = await res.json();
-        if (info && info.bufferedInSQLite !== undefined) {
-          document.getElementById('queue-count').textContent = info.bufferedInSQLite;
-        }
-      } catch (e) {}
-    }
-
-    // Interactive button actions
-    async function simulatePacket() {
       const sample = {
-        id: 'manual_' + Math.random().toString(36).substr(2, 9),
+        id: 'manual_' + Math.random().toString(36).substr(2, 8),
         timestamp: new Date().toISOString(),
         heartRate: Math.floor(Math.random() * (98 - 62 + 1)) + 62,
         hrv: Math.floor(Math.random() * (75 - 35 + 1)) + 35,
@@ -865,39 +1206,58 @@
           body: JSON.stringify(sample)
         });
         const out = await res.json();
-        alert('Simulator Packet Sent! Status: ' + JSON.stringify(out) + '\nQueued in SQLite on Mobile Gateway (port 3000).');
+
+        showToast(`📡 <strong>Smart Ring Packet Ingested:</strong> #${out.id?.slice(0, 8)} queued into SQLite (${sample.heartRate} BPM, ${sample.spo2}% SpO2)`, 'blue');
+
         checkGatewayQueue();
+        if (document.getElementById('sqlite-drawer').style.display === 'block') {
+          loadSQLiteBufferData();
+        }
       } catch (e) {
-        alert('Failed to send packet to gateway: ' + e.message);
+        showToast(`❌ Gateway connection error: ${e.message}`, 'rose');
       }
     }
 
-    async function flushGatewaySync() {
+    // INTERACTIVE ACTION 2: VISUAL BATCH SYNC
+    async function flushGatewaySyncVisual() {
+      animatePipelineFlow('particle-2', 'card-tier2', 'card-tier3');
+
       try {
         const res = await fetch('http://localhost:3000/api/sync-now', { method: 'POST' });
         const out = await res.json();
-        alert('Gateway Batch Sync Triggered!\n' + JSON.stringify(out));
+
+        if (out.count > 0) {
+          showToast(`🔄 <strong>Batch Sync Flushed:</strong> Transferred ${out.count} records from SQLite to Central Backend. Queue cleared.`, 'emerald');
+        } else {
+          showToast(`ℹ️ <strong>Gateway SQLite Queue Idle:</strong> No pending records to sync.`, 'amber');
+        }
+
         checkGatewayQueue();
+        if (document.getElementById('sqlite-drawer').style.display === 'block') {
+          loadSQLiteBufferData();
+        }
       } catch (e) {
-        alert('Gateway sync error: ' + e.message);
+        showToast(`❌ Batch sync error: ${e.message}`, 'rose');
       }
     }
 
-    function openRawQueue() {
-      window.open('http://localhost:3000/data', '_blank');
+    // INTERACTIVE ACTION 3: IN-PAGE GRAPHQL STUDIO
+    function toggleGraphQLStudio() {
+      const drawer = document.getElementById('graphql-studio-drawer');
+      const isVisible = drawer.style.display === 'block';
+      drawer.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible) {
+        runInPageGraphQL();
+      }
     }
 
-    function openGraphQLModal() {
-      document.getElementById('graphql-modal').style.display = 'flex';
-      executeGraphQL();
-    }
+    async function runInPageGraphQL() {
+      const responseBox = document.getElementById('gql-response-box');
+      const timingBox = document.getElementById('gql-timing');
+      responseBox.textContent = '// Querying Apollo GraphQL endpoint on :4000/graphql ...';
+      timingBox.textContent = 'Executing...';
 
-    function closeGraphQLModal() {
-      document.getElementById('graphql-modal').style.display = 'none';
-    }
-
-    async function executeGraphQL() {
-      const q = `query {
+      const q = `query GetRecentBiometrics {
   recentBiometrics(limit: 5) {
     id
     timestamp
@@ -907,10 +1267,8 @@
     sleepStage
   }
 }`;
-      const resBox = document.getElementById('gql-result');
-      resBox.style.display = 'block';
-      resBox.textContent = 'Executing query on http://localhost:4000/graphql ...';
 
+      const startTime = performance.now();
       try {
         const res = await fetch('http://localhost:4000/graphql', {
           method: 'POST',
@@ -918,13 +1276,113 @@
           body: JSON.stringify({ query: q })
         });
         const data = await res.json();
-        resBox.textContent = JSON.stringify(data, null, 2);
+        const duration = Math.round(performance.now() - startTime);
+
+        timingBox.textContent = `200 OK (${duration}ms)`;
+        responseBox.textContent = JSON.stringify(data, null, 2);
+
+        showToast(`⚡ <strong>GraphQL Query Executed:</strong> Retrieved ${data?.data?.recentBiometrics?.length || 0} biometrics in ${duration}ms`, 'purple');
       } catch (e) {
-        resBox.textContent = 'GraphQL Request Error: ' + e.message;
+        timingBox.textContent = 'Error';
+        responseBox.textContent = `// GraphQL Request Failed:\n${e.message}`;
       }
     }
 
-    // Init
+    // INTERACTIVE ACTION 4: IN-PAGE SQLITE BUFFER DRAWER
+    function toggleSQLiteDrawer() {
+      const drawer = document.getElementById('sqlite-drawer');
+      const isVisible = drawer.style.display === 'block';
+      drawer.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible) {
+        loadSQLiteBufferData();
+      }
+    }
+
+    async function loadSQLiteBufferData() {
+      const tbody = document.getElementById('sqlite-table-body');
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1rem">Reading SQLite queue from http://localhost:3000/data ...</td></tr>`;
+
+      try {
+        const res = await fetch('http://localhost:3000/data');
+        const info = await res.json();
+
+        if (info && Array.isArray(info.records) && info.records.length > 0) {
+          tbody.innerHTML = '';
+          info.records.forEach(r => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td style="color:var(--accent-blue)">#${r.id.slice(0, 10)}</td>
+              <td>${new Date(r.timestamp).toLocaleTimeString()}</td>
+              <td style="color:var(--accent-rose)">${r.heartRate} BPM</td>
+              <td style="color:var(--accent-amber)">${r.hrv} ms</td>
+              <td style="color:var(--accent-blue)">${r.spo2}%</td>
+              <td><span class="badge-stage badge-${r.sleepStage}">${r.sleepStage.toUpperCase()}</span></td>
+              <td><span style="color:var(--accent-amber)">⏳ Queued in SQLite</span></td>
+            `;
+            tbody.appendChild(tr);
+          });
+          showToast(`📦 <strong>SQLite Buffer Inspected:</strong> ${info.records.length} records currently buffered in queue.db`, 'amber');
+        } else {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--accent-emerald); padding: 1.5rem">
+            ✓ <strong>SQLite Offline Buffer is Clear</strong><br>
+            <span style="color: var(--text-muted); font-size: 0.75rem">All smart ring records have been delta-synced to the central backend.</span>
+          </td></tr>`;
+          showToast(`📦 <strong>SQLite Buffer Checked:</strong> Queue is empty (all data synced)`, 'amber');
+        }
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--accent-rose); padding: 1rem">Failed to read SQLite buffer: ${e.message}</td></tr>`;
+      }
+    }
+
+    // Live Stream connection
+    function initEventStream() {
+      const sseUrl = window.location.port === '4000' ? '/api/stream' : 'http://localhost:4000/api/stream';
+
+      try {
+        const evtSource = new EventSource(sseUrl);
+
+        evtSource.addEventListener('connected', () => {
+          console.log('[SSE] Connected to backend live stream');
+          document.getElementById('be-dot').style.background = '#10b981';
+        });
+
+        evtSource.addEventListener('biometric_added', (e) => {
+          const rec = JSON.parse(e.data);
+          updateKPIs(rec, true);
+        });
+
+        evtSource.onerror = () => {
+          console.warn('[SSE] EventSource reconnecting / polling fallback');
+        };
+      } catch (e) {
+        console.error('SSE initialization error', e);
+      }
+
+      fetchInitialData();
+      setInterval(checkGatewayQueue, 3000);
+    }
+
+    async function fetchInitialData() {
+      const url = window.location.port === '4000' ? '/api/biometrics?limit=15' : 'http://localhost:4000/api/biometrics?limit=15';
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          data.reverse().forEach(r => updateKPIs(r, false));
+        }
+      } catch (err) {}
+    }
+
+    async function checkGatewayQueue() {
+      try {
+        const res = await fetch('http://localhost:3000/data');
+        const info = await res.json();
+        if (info && info.bufferedInSQLite !== undefined) {
+          document.getElementById('queue-count').textContent = info.bufferedInSQLite;
+        }
+      } catch (e) {}
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       resizeCanvas();
       initEventStream();

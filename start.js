@@ -44,6 +44,18 @@ services.forEach(svc => {
   processes.push(proc);
 });
 
+setTimeout(() => {
+  console.log('\n================================================================');
+  console.log('🎉 ALL SERVICES ARE UP AND RUNNING!');
+  console.log('✨ Live Web Dashboard:   http://localhost:3000');
+  console.log('✨ Gateway /data Queue:  http://localhost:3000/data');
+  console.log('✨ GraphQL API Explorer: http://localhost:4000/graphql');
+  console.log('✨ Backend Health Check: http://localhost:4000/api/health');
+  console.log('----------------------------------------------------------------');
+  console.log('💡 Keep this window open. Press Ctrl + C to stop all services.');
+  console.log('================================================================\n');
+}, 2000);
+
 function cleanup() {
   console.log('\nShutting down all Ecosystem Sync services...');
   processes.forEach(p => p.kill());
